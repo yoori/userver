@@ -50,9 +50,17 @@ generate_grpc_files(
 )
 
 add_library(userver-api-common-protos STATIC ${generated_sources})
+
+set_target_properties(userver-api-common-protos PROPERTIES LINKER_LANGUAGE CXX)
+
 target_compile_options(userver-api-common-protos PUBLIC -Wno-unused-parameter)
 target_include_directories(userver-api-common-protos SYSTEM PUBLIC ${include_paths})
 target_link_libraries(userver-api-common-protos PUBLIC userver-core userver-grpc-deps)
 
 set(api-common-proto_LIBRARY userver-api-common-protos)
 set(api-common-proto_USRV_SOURCES ${generated_usrv_sources})
+
+# workaround for INSTALL dependent libraries without install this static library
+set_target_properties(userver-api-common-protos PROPERTIES LINKER_LANGUAGE CXX)
+
+userver_export(TARGETS userver-api-common-protos)

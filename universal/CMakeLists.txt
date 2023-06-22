@@ -144,7 +144,6 @@ endif()
 userver_target_link_libraries(${PROJECT_NAME}
   PUBLIC
     Threads::Threads
-    sanitize-target
   STATIC_PRIVATE
     sanitize-target
   PRIVATE

@@ -3,24 +3,18 @@ project(userver-grpc CXX)
 include(GrpcTargets)
 
 add_library(${PROJECT_NAME}-deps INTERFACE)
-target_include_directories(${PROJECT_NAME}-deps INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-if (NOT DEFINED GRPC_EXTERNAL_ENABLE)
-    if (USERVER_CONAN)
-        target_link_libraries(${PROJECT_NAME}-deps INTERFACE
-            protobuf::libprotobuf gRPC::grpc++
-        )
-        if ("${GRPC_LIBRARY_VERSION}" VERSION_GREATER_EQUAL "1.41")
-            target_link_libraries(${PROJECT_NAME}-deps INTERFACE
-                absl::base absl::synchronization
-            )
-        endif()
-    else()
-        target_link_libraries(${PROJECT_NAME}-deps INTERFACE Protobuf Grpc)
-    endif()
-else()
-  target_link_libraries(${PROJECT_NAME}-deps INTERFACE Protobuf Grpc)
+target_include_directories(${PROJECT_NAME}-deps INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_link_libraries(${PROJECT_NAME}-deps INTERFACE
+    protobuf::libprotobuf gRPC::grpc++
+)
+if(USERVER_CONAN AND "${gRPC_VERSION}" VERSION_GREATER_EQUAL "1.41")
+  target_link_libraries(
+      ${PROJECT_NAME}-deps INTERFACE
+      absl::base absl::synchronization
+  )
 endif()
-
 
 include(SetupGoogleProtoApis)
 
@@ -125,4 +119,9 @@ add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(${PROJECT_NAME} INTERFACE ${PROJECT_NAME}-handlers)
 target_link_libraries(${PROJECT_NAME} INTERFACE ${PROJECT_NAME}-internal)
 
-userver_install_library(TARGETS ${PROJECT_NAME})
+userver_export(TARGETS ${PROJECT_NAME}-deps)
+
+userver_install_library(
+  TARGETS
+    ${PROJECT_NAME}
+    ${PROJECT_NAME}-internal)

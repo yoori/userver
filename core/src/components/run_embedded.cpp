@@ -37,6 +37,7 @@ namespace components {
 
 namespace {
 
+/*
 class LogScope final {
  public:
   LogScope(const std::string& init_log_path, logging::Format format) {
@@ -45,7 +46,7 @@ class LogScope final {
     }
 
     try {
-      old_default_logger_ = logging::SetDefaultLogger(
+      old_default_logger_ = logging::impl::SetDefaultLoggerRef(
           logging::MakeFileLogger("default", init_log_path, format));
     } catch (const std::exception& e) {
       auto error_message = fmt::format(
@@ -57,13 +58,15 @@ class LogScope final {
 
   ~LogScope() noexcept(false) {
     if (old_default_logger_) {
-      logging::SetDefaultLogger(std::move(old_default_logger_));
+      logging::impl::SetDefaultLoggerRef(std::move(old_default_logger_));
     }
   }
 
  private:
+  
   logging::LoggerPtr old_default_logger_;
 };
+*/
 
 void HandleJemallocSettings() {
   static constexpr size_t kDefaultMaxBgThreads = 1;
@@ -134,7 +137,8 @@ void DoRun(std::mutex& stop_mutex,
   ++server::handlers::auth::apikey::auth_checker_apikey_module_activation;
   crypto::impl::Openssl::Init();
 
-  LogScope log_scope{init_log_path, format};
+  //LogScope log_scope{init_log_path, format};
+  logging::DefaultLoggerGuard log_scope(logging::MakeFileLogger("default", init_log_path, format));
 
   LOG_INFO() << "Parsing configs";
   if (config_vars_path) {

@@ -136,9 +136,6 @@ if (USERVER_FEATURE_JEMALLOC AND NOT USERVER_SANITIZE AND NOT MACOS)
   else()
     find_package_required(Jemalloc "libjemalloc-dev")
     target_link_libraries(${PROJECT_NAME} PUBLIC Jemalloc)
-  else()
-    find_package_required(Jemalloc "libyandex-taxi-jemalloc-dev")
-    target_link_libraries(${PROJECT_NAME} PUBLIC Jemalloc)
   endif()
 
   target_compile_definitions(${PROJECT_NAME} PRIVATE JEMALLOC_ENABLED)
@@ -217,12 +214,15 @@ else()
         ${USERVER_THIRD_PARTY_DIRS}/rapidjson/include
     )
     target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
-        ${USERVER_THIRD_PARTY_DIRS}/moodycamel/include
+        $<BUILD_INTERFACE:${USERVER_THIRD_PARTY_DIRS}/moodycamel/include>
+        $<INSTALL_INTERFACE:include/userver>
+        $<INSTALL_INTERFACE:include/userver/moodycamel>
     )
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${USERVER_THIRD_PARTY_DIRS}/date/include
+    $<BUILD_INTERFACE:${USERVER_THIRD_PARTY_DIRS}/date/include>
+    $<INSTALL_INTERFACE:include/userver>
 )
 
 if (NOT MACOS AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
@@ -254,15 +254,15 @@ set_property(
   APPEND PROPERTY COMPILE_FLAGS -O2
 )
 
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
-  ${USERVER_THIRD_PARTY_DIRS}/rapidjson/include
-)
+#target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
+#  ${USERVER_THIRD_PARTY_DIRS}/rapidjson/include
+#)
 
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
-  $<BUILD_INTERFACE:${USERVER_THIRD_PARTY_DIRS}/moodycamel/include>
-  $<INSTALL_INTERFACE:include/userver>
-  $<INSTALL_INTERFACE:include/userver/moodycamel>
-)
+#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
+#  $<BUILD_INTERFACE:${USERVER_THIRD_PARTY_DIRS}/moodycamel/include>
+#  $<INSTALL_INTERFACE:include/userver>
+#  $<INSTALL_INTERFACE:include/userver/moodycamel>
+#)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../shared/include/userver"
   DESTINATION "include/"
@@ -272,16 +272,16 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../shared/include/userver"
 )
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
-  DESTINATION "include/userver/components/")
+  DESTINATION "include/userver/userver/components/")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_config.hpp"
-  DESTINATION "include/engine/coro/")
+  DESTINATION "include/userver/engine/coro/")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp"
-  DESTINATION "include/engine/ev/")
+  DESTINATION "include/userver/engine/ev/")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_config.hpp"
-  DESTINATION "include/engine/task/")
+  DESTINATION "include/userver/engine/task/")
 
 install(DIRECTORY "${USERVER_THIRD_PARTY_DIRS}/moodycamel/include/moodycamel"
   DESTINATION "include/userver"
