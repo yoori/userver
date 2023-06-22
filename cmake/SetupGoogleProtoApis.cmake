@@ -49,7 +49,7 @@ generate_grpc_files(
   CPP_USRV_FILES generated_usrv_sources
 )
 
-add_library(userver-api-common-protos STATIC ${generated_sources})
+userver_add_library(userver-api-common-protos SOURCES ${generated_sources})
 
 set_target_properties(userver-api-common-protos PROPERTIES LINKER_LANGUAGE CXX)
 

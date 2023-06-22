@@ -118,7 +118,7 @@ endif()
     find_package(LibEv REQUIRED)
 endif()
 
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+userver_add_library(${PROJECT_NAME} SOURCES ${SOURCES})
 
 target_compile_definitions(${PROJECT_NAME}
   PRIVATE

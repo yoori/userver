@@ -55,7 +55,7 @@ else()
     #set(BACKTRACE_USERVER_LIBRARIES dl)
 endif()
 
-add_library (${PROJECT_NAME} STATIC ${BACKTRACE_USERVER_SOURCES})
+userver_add_library (${PROJECT_NAME} SOURCES ${BACKTRACE_USERVER_SOURCES})
 if (BacktraceIncludeFile)
     target_compile_definitions(
         ${PROJECT_NAME}
