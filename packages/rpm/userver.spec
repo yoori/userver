@@ -1,3 +1,5 @@
+%define __boost_suffix 176
+
 Name:    userver
 Version: %{_version}
 Release: ssv1%{?dist}
@@ -26,7 +28,7 @@ Requires: hiredis
 BuildRequires: rapidjson-devel
 BuildRequires: moodycamel-concurrentqueue-devel
 BuildRequires: compiler-rt
-BuildRequires: boost-devel >= 1.66.0
+BuildRequires: boost%{__boost_suffix}-devel >= 1.67.0
 BuildRequires: amqp-cpp-devel
 BuildRequires: clickhouse-cpp-devel
 BuildRequires: libatomic
@@ -77,13 +79,11 @@ export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.6/site-packages
 
 # -DUSERVER_LTO:BOOL=OFF as workaround for dwz crash
 cmake -DUSERVER_FEATURE_PATCH_LIBPQ=0 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSERVER_FEATURE_STACKTRACE=0 \
-  -DPython3_EXECUTABLE=/usr/bin/python3 \
+  -DUSERVER_PYTHON_PATH=/usr/bin/python3 \
   -DUSERVER_BUILD_SHARED_LIBS:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr \
   -DCMAKE_INSTALL_LIBDIR=lib64 -DUSERVER_DOWNLOAD_PACKAGES:BOOL=OFF \
   -DUSERVER_LTO:BOOL=OFF \
   -DUSERVER_GEN_GDB_DEBUGINFO:BOOL=ON \
-  -DUSERVER_IS_THE_ROOT_PROJECT:BOOL=OFF \
-  -DUSERVER_NOT_YANDEX_ENV:BOOL=OFF \
   ..
 
 make -j

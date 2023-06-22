@@ -170,4 +170,8 @@ else ()
   add_definitions(-D_FORTIFY_SOURCE=2)
 endif ()
 
+if (UNIX AND BUILD_SHARED_LIBS)
+  link_libraries(dl)
+endif ()
+
 enable_testing ()
