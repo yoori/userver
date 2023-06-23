@@ -114,7 +114,7 @@ popd
 rm -rf %{buildroot}
 
 %files -n %{name}
-%{_bindir}/userver/
+#%{_bindir}/userver/
 %{_libdir}/lib*.so
 
 %files -n %{name}-devel

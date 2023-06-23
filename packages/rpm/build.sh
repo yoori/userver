@@ -38,6 +38,8 @@ $SUDO_PREFIX yum-builddep -y "$SPEC_FILE" || \
 spectool --force -g -R --define "_version $VERSION" "$SPEC_FILE" || \
   { echo "can't download sources" >&2 ; exit 1 ; }
 
+export PATH=/opt/rh/gcc-toolset-11/root/usr/bin/:$PATH
+
 rpmbuild --force -ba --define "_version $VERSION" "$SPEC_FILE" || \
   { echo "can't build RPM" >&2 ; exit 1 ; }
 
