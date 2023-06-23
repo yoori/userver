@@ -275,16 +275,21 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../shared/include/userver"
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
   DESTINATION "include/userver/userver/components/")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_config.hpp"
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_config.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_stats.hpp"
   DESTINATION "include/userver/engine/coro/")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp"
   DESTINATION "include/userver/engine/ev/")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_config.hpp"
-  DESTINATION "include/userver/engine/task/")
-
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor.hpp"
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_config.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/counted_coroutine_ptr.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_counter.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/counted_coroutine_ptr.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_queue.hpp"
   DESTINATION "include/userver/engine/task/")
 
 install(DIRECTORY "${USERVER_THIRD_PARTY_DIRS}/moodycamel/include/moodycamel"
