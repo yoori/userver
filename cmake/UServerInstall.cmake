@@ -18,6 +18,7 @@ function(userver_install_library)
     PATTERN "*.hpp"
     PATTERN "*.h"
     PATTERN "*.inc"
+    PATTERN "*.ipp"
     )
 
 endfunction()
