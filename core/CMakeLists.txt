@@ -278,6 +278,7 @@ install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
 install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_config.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_stats.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool.hpp"
   DESTINATION "include/userver/engine/coro/")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp"
