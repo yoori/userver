@@ -24,9 +24,12 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} PUBLIC userver-core)
 target_link_libraries(${PROJECT_NAME} PUBLIC userver-grpc-internal)
 
-# here looped dependency ! it works now only for static linkage
-# I am not sure that this is nice solution ...
 add_grpc_library(${PROJECT_NAME}_proto PROTOS healthchecking/healthchecking.proto)
+
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+    $<INSTALL_INTERFACE:include/userver/grpc/handlers/proto>
+  )
 
 set_target_properties(${PROJECT_NAME}_proto PROPERTIES LINKER_LANGUAGE CXX)
 

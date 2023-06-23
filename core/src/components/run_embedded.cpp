@@ -14,7 +14,7 @@
 #include <fmt/format.h>
 
 #include <components/manager_config.hpp>
-#include <userver/components/manager.hpp>
+#include <components/manager.hpp>
 #include <userver/formats/yaml/serialize.hpp>
 #include <userver/fs/blocking/read.hpp>
 #include <userver/logging/log.hpp>

@@ -234,9 +234,9 @@ function(add_grpc_library NAME)
   )
   userver_add_library(${NAME} SOURCES ${generated_sources} ${generated_usrv_sources})
   target_compile_options(${NAME} PUBLIC -Wno-unused-parameter)
+
   target_include_directories(${NAME} SYSTEM PUBLIC
     $<BUILD_INTERFACE:${include_paths}>
-    $<INSTALL_INTERFACE:include/proto>
     )
 
   target_link_libraries(${NAME} PUBLIC userver-grpc-internal)
