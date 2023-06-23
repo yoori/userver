@@ -57,4 +57,11 @@ if (USERVER_IS_THE_ROOT_PROJECT)
     add_subdirectory(functional_tests)
 endif()
 
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/proto"
+  DESTINATION "include/userver/grpc/handlers/"
+  FILES_MATCHING
+  PATTERN "*.pb.hpp"
+  PATTERN "*.pb.h"
+  )
+
 userver_export(TARGETS ${PROJECT_NAME})
