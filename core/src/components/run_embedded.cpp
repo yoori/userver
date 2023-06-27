@@ -37,37 +37,6 @@ namespace components {
 
 namespace {
 
-/*
-class LogScope final {
- public:
-  LogScope(const std::string& init_log_path, logging::Format format) {
-    if (init_log_path.empty()) {
-      return;
-    }
-
-    try {
-      old_default_logger_ = logging::impl::SetDefaultLoggerRef(
-          logging::MakeFileLogger("default", init_log_path, format));
-    } catch (const std::exception& e) {
-      auto error_message = fmt::format(
-          "Setting initial logging path to '{}' failed. ", init_log_path);
-      LOG_ERROR() << error_message << e;
-      throw std::runtime_error(error_message + e.what());
-    }
-  }
-
-  ~LogScope() noexcept(false) {
-    if (old_default_logger_) {
-      logging::impl::SetDefaultLoggerRef(std::move(old_default_logger_));
-    }
-  }
-
- private:
-  
-  logging::LoggerPtr old_default_logger_;
-};
-*/
-
 void HandleJemallocSettings() {
   static constexpr size_t kDefaultMaxBgThreads = 1;
 
