@@ -121,6 +121,9 @@ target_link_libraries(${PROJECT_NAME} INTERFACE ${PROJECT_NAME}-internal)
 
 userver_export(TARGETS ${PROJECT_NAME}-deps)
 
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/ugrpc/client/impl/client_configs.hpp"
+  DESTINATION "include/userver/ugrpc/client/impl/")
+
 userver_install_library(
   TARGETS
     ${PROJECT_NAME}
