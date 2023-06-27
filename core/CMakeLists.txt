@@ -282,6 +282,9 @@ install(FILES
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp"
   DESTINATION "include/userver/engine/ev/")
 
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/concurrent/impl/interference_shield.hpp"
+  DESTINATION "include/userver/concurrent/impl/")
+
 install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_config.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor.hpp"

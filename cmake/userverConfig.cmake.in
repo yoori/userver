@@ -3,7 +3,7 @@
 find_package(PkgConfig REQUIRED)
 
 find_package(Threads REQUIRED)
-find_package(Boost COMPONENTS filesystem program_options iostreams regex locale REQUIRED)
+find_package(Boost COMPONENTS filesystem program_options iostreams regex locale coroutine REQUIRED)
 find_package(CURL REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(Iconv REQUIRED)
