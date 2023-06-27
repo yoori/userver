@@ -282,15 +282,22 @@ install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool.hpp"
   DESTINATION "include/userver/engine/coro/")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp"
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/async_payload_base.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_control.hpp"
   DESTINATION "include/userver/engine/ev/")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/concurrent/impl/interference_shield.hpp"
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/concurrent/impl/intrusive_hooks.hpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/concurrent/impl/interference_shield.hpp"
   DESTINATION "include/userver/concurrent/impl/")
 
 install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_config.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_pools.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/counted_coroutine_ptr.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_counter.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/counted_coroutine_ptr.hpp"
