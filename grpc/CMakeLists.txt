@@ -124,6 +124,9 @@ userver_export(TARGETS ${PROJECT_NAME}-deps)
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/ugrpc/client/impl/client_configs.hpp"
   DESTINATION "include/userver/ugrpc/client/impl/")
 
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/ugrpc/server/impl/server_configs.hpp"
+  DESTINATION "include/userver/ugrpc/server/impl/")
+
 userver_install_library(
   TARGETS
     ${PROJECT_NAME}
