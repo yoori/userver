@@ -16,6 +16,7 @@ function(userver_install_library)
     DESTINATION "include"
     FILES_MATCHING
     PATTERN "*.hpp"
+    PATTERN "*.ipp"
     PATTERN "*.h"
     PATTERN "*.inc"
     )

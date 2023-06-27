@@ -287,10 +287,10 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../shared/include/userver"
 )
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/utils/signal_catcher.hpp"
-  DESTINATION "include/userver/userver/utils/")
+  DESTINATION "include/userver/utils/")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
-  DESTINATION "include/userver/userver/components/")
+  DESTINATION "include/userver/components/")
 
 install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_config.hpp"
