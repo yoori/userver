@@ -270,6 +270,9 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../shared/include/userver"
   PATTERN "*.h"
 )
 
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/utils/signal_catcher.hpp"
+  DESTINATION "include/userver/userver/utils/")
+
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
   DESTINATION "include/userver/userver/components/")
 
