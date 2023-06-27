@@ -173,7 +173,15 @@ if (USERVER_FEATURE_UBOOST_CORO)
         userver-uboost-coro
     )
     target_include_directories(${PROJECT_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/uboost_coro/include
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/uboost_coro/include>
+      $<INSTALL_INTERFACE:include/userver>
+    )
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/uboost_coro/include/coroutines"
+      DESTINATION "include/userver/"
+      FILES_MATCHING
+      PATTERN "*.hpp"
+      PATTERN "*.h"
     )
 else()
     target_link_libraries(${PROJECT_NAME}
@@ -181,7 +189,15 @@ else()
         Boost::context
     )
     target_include_directories(${PROJECT_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/sys_coro/include
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sys_coro/include>
+      $<INSTALL_INTERFACE:include/userver>
+    )
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/sys_coro/include/coroutines"
+      DESTINATION "include/userver/"
+      FILES_MATCHING
+      PATTERN "*.hpp"
+      PATTERN "*.h"
     )
 endif()
 
