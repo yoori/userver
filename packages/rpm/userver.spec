@@ -42,6 +42,12 @@ Requires: re2
 BuildRequires: libiconv-devel
 Requires: libiconv
 BuildRequires: python3-jinja2
+Requires: protobuf >= 3.21.9
+BuildRequires: protobuf-devel >= 3.21.9
+Requires: grpc >= 1.48.1
+Requires: grpc-cpp >= 1.48.1
+BuildRequires: grpc-devel >= 1.48.1
+BuildRequires: grpc-plugins >= 1.48.1
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{_version}-%{release}-XXXXXX)
 
@@ -62,7 +68,9 @@ Requires: libssh-devel
 Requires: hiredis-devel
 Requires: clickhouse-cpp
 Requires: amqp-cpp
-#Requires: boost-stacktrace >= 1.66.0
+Requires: protobuf-devel >= 3.21.9
+Requires: grpc-devel >= 1.48.1
+Requires: grpc-plugins >= 1.48.1
 
 %description -n %{name}-devel
 
