@@ -289,7 +289,9 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../shared/include/userver"
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/utils/signal_catcher.hpp"
   DESTINATION "include/userver/utils/")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager_config.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/components/manager.hpp"
   DESTINATION "include/userver/components/")
 
 install(FILES
