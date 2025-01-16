@@ -1,4 +1,3 @@
-#include <atomic>
 #include <cstdint>
 
 #ifndef USERVER_USE_STD_DWCAS
@@ -10,10 +9,7 @@ struct alignas(sizeof(std::uintptr_t) * 2) A final {
     std::uintptr_t y{};
 };
 
-#ifdef USERVER_USE_STD_DWCAS
-template <typename T>
-using Atomic = std::atomic<T>;
-#else
+#ifndef USERVER_USE_STD_DWCAS
 template <typename T>
 using Atomic = boost::atomic<T>;
 #endif

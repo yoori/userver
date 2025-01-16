@@ -1,5 +1,10 @@
 option(USERVER_DOWNLOAD_PACKAGE_CARES "Download and setup c-ares if no c-ares of matching version was found" ${USERVER_DOWNLOAD_PACKAGES})
 
+if (TARGET c-ares::cares)
+  message("Target c-ares::cares already exist")
+  return()
+endif()
+
 if (NOT USERVER_FORCE_DOWNLOAD_PACKAGES)
   if (USERVER_DOWNLOAD_PACKAGE_CARES)
     find_package(c-ares 1.16 QUIET)

@@ -163,6 +163,96 @@ function(userver_venv_setup)
         OUTPUT_VARIABLE pip_requirements
     )
 
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U pip
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U multidict
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U typing_extensions
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U yarl
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U async_timeout
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U idna_ssl
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U attrs
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U aiosignal
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U charset_normalizer
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
     # psycopg2 implicitly requires 'wheel' to be already installed
     execute_process(
         COMMAND
@@ -172,6 +262,16 @@ function(userver_venv_setup)
     )
     if(status)
         message(FATAL_ERROR "Failed to install venv requirements")
+    endif()
+
+    execute_process(
+        COMMAND
+        "${venv_bin_dir}/python3" -m pip install
+        -U google-api-python-client
+        RESULT_VARIABLE status
+    )
+    if(status)
+      message(FATAL_ERROR "Failed to install venv requirements")
     endif()
 
     execute_process(
