@@ -34,6 +34,14 @@ struct PortInfo final {
         bool is_monitor
     );
 
+    void Init(
+      const net::ListenerConfig& listener_config,
+      engine::TaskProcessor& task_processor,
+      const utils::statistics::MetricsStoragePtr& metrics_storage,
+      const dynamic_config::Source& dynamic_config_source,
+      const std::string& server_name,
+      const bool is_monitor);
+
     void Start();
 
     void Stop();
@@ -71,6 +79,33 @@ void PortInfo::Init(
     }
 }
 
+void PortInfo::Init(
+  const net::ListenerConfig& listener_config,
+  engine::TaskProcessor& task_processor,
+  const utils::statistics::MetricsStoragePtr& metrics_storage,
+  const dynamic_config::Source& dynamic_config_source,
+  const std::string& server_name,
+  const bool is_monitor) {
+  LOG_INFO() << "Creating listener" << (is_monitor ? " (monitor)" : "");
+
+  request_handler_.emplace(
+    metrics_storage,
+    dynamic_config_source,
+    is_monitor,
+    server_name);
+  endpoint_info_ = std::make_shared<net::EndpointInfo>(
+    listener_config,
+    *request_handler_);
+
+  const auto& event_thread_pool = task_processor.EventThreadPool();
+  size_t listener_shards = listener_config.shards ? *listener_config.shards : event_thread_pool.GetSize();
+
+  listeners_.reserve(listener_shards);
+  while (listener_shards--) {
+    listeners_.emplace_back(endpoint_info_, task_processor, data_accounter_);
+  }
+}
+
 void PortInfo::Start() {
     UASSERT(request_handler_);
     request_handler_->DisableAddHandler();
@@ -104,6 +139,14 @@ public:
         const storages::secdist::SecdistConfig& secdist,
         const components::ComponentContext& component_context
     );
+
+    ServerImpl(
+      const ServerConfig& config,
+      engine::TaskProcessor& task_processor,
+      const utils::statistics::MetricsStoragePtr& metrics_storage,
+      const dynamic_config::Source& dynamic_config_source,
+      const storages::secdist::SecdistConfig& secdist);
+
     ~ServerImpl();
 
     void StartPortInfos();
@@ -163,6 +206,41 @@ ServerImpl::ServerImpl(
                        .BuildPipeline(middlewares::DefaultPipeline());
 
     LOG_INFO() << "Server is created, listening for incoming connections.";
+}
+
+ServerImpl::ServerImpl(
+  const ServerConfig& config,
+  engine::TaskProcessor& task_processor,
+  const utils::statistics::MetricsStoragePtr& metrics_storage,
+  const dynamic_config::Source& dynamic_config_source,
+  const storages::secdist::SecdistConfig& secdist)
+  : config_(std::move(config)) {
+  LOG_INFO() << "Creating server";
+
+  for (auto& port : config_.listener.ports) port.ReadTlsSettings(secdist);
+
+  main_port_info_.Init(
+    config_.listener,
+    task_processor,
+    metrics_storage,
+    dynamic_config_source,
+    config.server_name,
+    false);
+  if (config_.max_response_size_in_flight) {
+    main_port_info_.data_accounter_.SetMaxLevel(
+      *config_.max_response_size_in_flight);
+  }
+  if (config_.monitor_listener) {
+    monitor_port_info_.Init(
+      *config_.monitor_listener,
+      task_processor,
+      metrics_storage,
+      dynamic_config_source,
+      config.server_name,
+      true);
+  }
+
+  LOG_INFO() << "Server is created, listening for incoming connections.";
 }
 
 ServerImpl::~ServerImpl() { Stop(); }
@@ -317,6 +395,19 @@ Server::Server(
     const components::ComponentContext& component_context
 )
     : pimpl(std::make_unique<ServerImpl>(std::move(config), secdist, component_context)) {}
+
+Server::Server(
+  ServerConfig config,
+  engine::TaskProcessor& task_processor,
+  const utils::statistics::MetricsStoragePtr& metrics_storage,
+  const dynamic_config::Source& dynamic_config_source,
+  const storages::secdist::SecdistConfig& secdist = {})
+  : pimpl(std::make_unique<ServerImpl>(
+      std::move(config),
+      task_processor,
+      metrics_storage,
+      dynamic_config_source,
+      secdist)) {}
 
 Server::~Server() = default;
 

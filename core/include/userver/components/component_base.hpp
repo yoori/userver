@@ -20,6 +20,8 @@ class ComponentBase : public RawComponentBase {
 public:
     ComponentBase(const ComponentConfig&, const ComponentContext&);
 
+    ComponentBase() = default;
+
     ComponentBase(ComponentBase&&) = delete;
     ComponentBase(const ComponentBase&) = delete;
 

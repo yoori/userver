@@ -35,6 +35,14 @@ public:
         const storages::secdist::SecdistConfig& secdist,
         const components::ComponentContext& component_context
     );
+
+    Server(
+        ServerConfig config,
+        engine::TaskProcessor& task_processor,
+        const utils::statistics::MetricsStoragePtr& metrics_storage,
+        const dynamic_config::Source& dynamic_config_source,
+        const storages::secdist::SecdistConfig& secdist);
+
     ~Server() override;
 
     const ServerConfig& GetConfig() const;

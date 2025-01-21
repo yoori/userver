@@ -6,6 +6,7 @@
 #include <userver/dynamic_config/fwd.hpp>
 #include <userver/formats/json_fwd.hpp>
 #include <userver/yaml_config/fwd.hpp>
+#include <userver/tracing/manager.hpp>
 
 namespace dynamic_config::http_client_connect_throttle {
 struct VariableTypeRaw;
@@ -15,7 +16,7 @@ using VariableType = VariableTypeRaw;
 USERVER_NAMESPACE_BEGIN
 
 namespace tracing {
-class TracingManagerBase;
+extern const GenericTracingManager kCobrazzTracingManager;
 }  // namespace tracing
 
 namespace clients::http {
@@ -36,7 +37,7 @@ struct ClientSettings final {
     std::string thread_name_prefix{};
     size_t io_threads{8};
     DeadlinePropagationConfig deadline_propagation{};
-    const tracing::TracingManagerBase* tracing_manager{nullptr};
+    const tracing::TracingManagerBase* tracing_manager = &tracing::kCobrazzTracingManager;
     CancellationPolicy cancellation_policy{CancellationPolicy::kCancel};
 };
 

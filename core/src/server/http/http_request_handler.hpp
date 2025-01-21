@@ -28,6 +28,12 @@ public:
         std::string server_name
     );
 
+  HttpRequestHandler(
+    const utils::statistics::MetricsStoragePtr& metrics_storage,
+    const dynamic_config::Source& dynamic_config_source,
+    const bool is_monitor,
+    const std::string& server_name);
+
     using NewRequestHook = std::function<void(std::shared_ptr<http::HttpRequest>)>;
     void SetNewRequestHook(NewRequestHook hook);
 
