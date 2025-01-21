@@ -19,6 +19,7 @@
 #include <userver/server/http/http_request.hpp>
 #include <userver/server/http/http_response.hpp>
 #include <userver/server/http/http_response_body_stream_fwd.hpp>
+#include <userver/server/middlewares/http_middleware_base.hpp>
 // Not needed here, but a lot of code depends on it being included transitively
 #include <userver/tracing/span.hpp>
 
@@ -64,11 +65,25 @@ class HttpHandlerStatisticsScope;
 
 class HttpHandlerBase : public HandlerBase {
 public:
+  using HttpMiddlewarePtr = std::unique_ptr<middlewares::HttpMiddlewareBase>;
+  using HttpMiddlewares = std::vector<HttpMiddlewarePtr>;
+
+public:
     HttpHandlerBase(
         const components::ComponentConfig& config,
         const components::ComponentContext& component_context,
         bool is_monitor = false
     );
+
+  HttpHandlerBase(
+    const std::string& handler_name,
+    const HandlerConfig& handler_config,
+    const dynamic_config::Source& dynamic_config_source,
+    utils::statistics::Storage& statistics_storage,
+    const bool is_body_streamed = false,
+    const std::optional<logging::Level> log_level = {},
+    const bool is_monitor = false,
+    HttpMiddlewares&& http_middlewares = {});
 
     ~HttpHandlerBase() override;
 
@@ -199,6 +214,8 @@ private:
     void SetResponseServerHostname(http::HttpResponse& response) const;
 
     void BuildMiddlewarePipeline(const components::ComponentConfig&, const components::ComponentContext&);
+
+    void BuildMiddlewarePipeline(HttpMiddlewares&& user_http_middlewares);
 
     const dynamic_config::Source config_source_;
     const std::vector<http::HttpMethod> allowed_methods_;

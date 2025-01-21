@@ -53,6 +53,11 @@ public:
         const components::ComponentContext& component_context,
         bool is_monitor = false
     );
+
+  HandlerBase(
+    const HandlerConfig& config,
+    const bool is_monitor = false);
+
     ~HandlerBase() noexcept override = default;
 
     /// Parses request, executes processing routines, and fills response

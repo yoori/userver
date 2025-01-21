@@ -23,6 +23,15 @@ HandlerBase::HandlerBase(
           is_monitor_
       )) {}
 
+HandlerBase::HandlerBase(
+  const HandlerConfig& config,
+  const bool is_monitor)
+  : ComponentBase(),
+    is_monitor_(is_monitor),
+    config_(config)
+{
+}
+
 const HandlerConfig& HandlerBase::GetConfig() const { return config_; }
 
 yaml_config::Schema HandlerBase::GetStaticConfigSchema() {

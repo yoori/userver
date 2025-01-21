@@ -39,6 +39,16 @@
 #include <userver/utils/text_light.hpp>
 #include <userver/yaml_config/merge_schemas.hpp>
 
+#include <server/middlewares/auth.hpp>
+#include <server/middlewares/baggage.hpp>
+#include <server/middlewares/deadline_propagation.hpp>
+#include <server/middlewares/decompression.hpp>
+#include <server/middlewares/exceptions_handling.hpp>
+#include <server/middlewares/handler_adapter.hpp>
+#include <server/middlewares/handler_metrics.hpp>
+#include <server/middlewares/rate_limit.hpp>
+#include <server/middlewares/tracing.hpp>
+
 USERVER_NAMESPACE_BEGIN
 
 namespace server::handlers {
@@ -194,6 +204,58 @@ HttpHandlerBase::HttpHandlerBase(
     set_response_server_hostname_ = GetConfig().set_response_server_hostname.value_or(
         server_component.GetServer().GetConfig().set_response_server_hostname
     );
+}
+
+HttpHandlerBase::HttpHandlerBase(
+  const std::string& handler_name,
+  const HandlerConfig& handler_config,
+  const dynamic_config::Source& dynamic_config_source,
+  utils::statistics::Storage& statistics_storage,
+  const bool is_body_streamed,
+  const std::optional<logging::Level> log_level,
+  const bool is_monitor,
+  HttpMiddlewares&& user_http_middlewares)
+  : HandlerBase(handler_config, is_monitor),
+    config_source_(dynamic_config_source),
+    allowed_methods_(InitAllowedMethods(GetConfig())),
+    handler_name_(handler_name),
+    log_level_(log_level),
+    handler_statistics_(std::make_unique<HttpHandlerStatistics>()),
+    request_statistics_(std::make_unique<HttpRequestStatistics>()),
+    is_body_streamed_(is_body_streamed)
+{
+  if (allowed_methods_.empty()) {
+    LOG_WARNING() << "empty allowed methods list in " << handler_name;
+  }
+
+  std::vector<utils::statistics::Label> labels{
+    {"http_handler", handler_name},
+  };
+
+  auto prefix = std::visit(
+    utils::Overloaded{
+      [&](const std::string& path) {
+        labels.emplace_back("http_path", utils::graphite::EscapeName(path));
+        return std::string{"http"};
+      },
+      [] (FallbackHandler fallback) { return "http.by-fallback." + ToString(fallback); }},
+    GetConfig().path
+  );
+
+  BuildMiddlewarePipeline(std::move(user_http_middlewares));
+
+  statistics_holder_ = statistics_storage.RegisterWriter(
+    std::move(prefix),
+    [this] (utils::statistics::Writer& result) {
+      FormatStatistics(result["handler"], *handler_statistics_);
+      if constexpr (kIncludeServerHttpMetrics) {
+        FormatStatistics(result["request"], *request_statistics_);
+      }
+    },
+    std::move(labels)
+  );
+
+  set_response_server_hostname_ = GetConfig().set_response_server_hostname.value_or(false);
 }
 
 HttpHandlerBase::~HttpHandlerBase() { statistics_holder_.Unregister(); }
@@ -495,6 +557,33 @@ void HttpHandlerBase::BuildMiddlewarePipeline(
 
     // Finalize the pipeline
     { add_middleware(middlewares::HandlerAdapterFactory::kName); }
+}
+
+void HttpHandlerBase::BuildMiddlewarePipeline(
+  HttpMiddlewares&& user_http_middlewares)
+{
+  HttpMiddlewares http_middlewares;
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::HandlerMetrics>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::SetAcceptEncoding>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::UnknownExceptionsHandling>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::RateLimit>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::Baggage>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::Decompression>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::ExceptionsHandling>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::DeadlinePropagation>(*this));
+  http_middlewares.emplace_back(std::make_unique<server::middlewares::HandlerAdapter>(*this));
+
+  for (auto& middleware : user_http_middlewares)
+  {
+    http_middlewares.emplace_back(std::move(middleware));
+  }
+
+  auto* next_middleware_ptr{&first_middleware_};
+  for (auto& http_middleware : http_middlewares)
+  {
+    *next_middleware_ptr = std::move(http_middleware);
+    next_middleware_ptr = &(*next_middleware_ptr)->next_;
+  }
 }
 
 yaml_config::Schema HttpHandlerBase::GetStaticConfigSchema() {

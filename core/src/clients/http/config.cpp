@@ -5,8 +5,15 @@
 #include <userver/dynamic_config/value.hpp>
 #include <userver/formats/json/value.hpp>
 #include <userver/yaml_config/yaml_config.hpp>
+#include <userver/utils/flags.hpp>
 
 USERVER_NAMESPACE_BEGIN
+
+namespace tracing {
+const GenericTracingManager kCobrazzTracingManager{
+  utils::Flags<Format>{},
+  utils::Flags<Format>{}};
+}  // namespace tracing
 
 namespace clients::http {
 namespace {
