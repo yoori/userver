@@ -33,8 +33,8 @@ auto& GetExperimentsInfo() noexcept {
 
 void RegisterExperiment(UserverExperiment& experiment) {
     utils::impl::AssertStaticRegistrationAllowed("UserverExperiment creation");
-    const auto [_, success] = GetExperimentsInfo().try_emplace(experiment.GetName(), experiment);
-    UINVARIANT(success, fmt::format("userver experiment with name '{}' is already registered", experiment.GetName()));
+    const auto [it, success] = GetExperimentsInfo().try_emplace(experiment.GetName(), experiment);
+    UINVARIANT(success || (!success && it->second.GetBase() == &experiment), fmt::format("userver experiment with name '{}' is already registered", experiment.GetName()));
 }
 
 auto GetEnabledUserverExperiments() {
