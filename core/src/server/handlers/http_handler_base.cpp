@@ -239,7 +239,7 @@ HttpHandlerBase::HttpHandlerBase(
         labels.emplace_back("http_path", utils::graphite::EscapeName(path));
         return std::string{"http"};
       },
-      [] (FallbackHandler fallback) { return "http.by-fallback." + ToString(fallback); }},
+      [] (FallbackHandler fallback) { return fmt::format("http.by-fallback.{}", ToString(fallback)); }},
     GetConfig().path
   );
 
