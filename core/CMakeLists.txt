@@ -150,7 +150,7 @@ if (USERVER_FEATURE_UBOOST_CORO)
         userver-uboost-coro
     )
     target_include_directories(${PROJECT_NAME} PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/uboost_coro/include
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/uboost_coro/include>
     )
 else()
     find_package(Boost REQUIRED COMPONENTS
@@ -162,7 +162,7 @@ else()
         Boost::context
     )
     target_include_directories(${PROJECT_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/sys_coro/include
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sys_coro/include>
     )
 endif()
 
@@ -196,8 +196,9 @@ endif()
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${USERVER_THIRD_PARTY_DIRS}/pfr/include>
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-  ${CMAKE_CURRENT_SOURCE_DIR}/../grpc/src
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../grpc/src>
+  $<INSTALL_INTERFACE:include>
 )
 _userver_directory_install(COMPONENT core
   DIRECTORY
@@ -222,9 +223,9 @@ set_property(
 
 target_include_directories(${PROJECT_NAME}
   PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../universal/src/
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/
-    ${CMAKE_CURRENT_BINARY_DIR}
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../universal/src/>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
 
 userver_target_generate_chaotic_dynamic_configs(
