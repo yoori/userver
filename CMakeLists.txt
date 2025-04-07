@@ -19,6 +19,7 @@ project(userver)
 
 set(USERVER_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
+option(USERVER_GEN_GDB_DEBUGINFO "Compile with generation of gdb3 debug info format" OFF)
 option(
     USERVER_INSTALL
     "Prepare build of userver to install in system"

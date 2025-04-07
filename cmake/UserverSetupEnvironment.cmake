@@ -50,7 +50,25 @@ function(_userver_setup_environment_impl)
   set(CMAKE_CXX_EXTENSIONS OFF PARENT_SCOPE)
   set(CMAKE_VISIBILITY_INLINES_HIDDEN ON PARENT_SCOPE)
 
-  add_compile_options("-pipe" "-g" "-fPIC")
+  # remove default -g debug option (we will add it if required)
+  list (REMOVE_ITEM CMAKE_C_FLAGS_DEBUG "-g")
+  set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}" CACHE STRING "Flags used by the C compiler during DEBUG builds" FORCE)
+  list (REMOVE_ITEM CMAKE_CXX_FLAGS_DEBUG "-g")
+  set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}" CACHE STRING "Flags used by the CXX compiler during DEBUG builds" FORCE)
+
+  list (REMOVE_ITEM CMAKE_C_FLAGS_RELWITHDEBINFO "-g")
+  set (CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}" CACHE STRING "Flags used by the C compiler during RELWITHDEBINFO builds" FORCE)
+  list (REMOVE_ITEM CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g")
+  set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}" CACHE STRING "Flags used by the CXX compiler during RELEASE builds" FORCE)
+
+  if (USERVER_GEN_GDB_DEBUGINFO)
+    add_compile_options ("-ggdb3")
+  else ()
+    add_compile_options ("-g")
+  endif()
+
+  add_compile_options ("-pipe" "-fPIC")
+
   add_compile_definitions("PIC=1")
 
   option(USERVER_COMPILATION_TIME_TRACE "Generate Clang compilation time trace" OFF)
