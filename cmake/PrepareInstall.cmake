@@ -35,7 +35,7 @@ function(_userver_install_targets)
   install(
       TARGETS ${ARG_TARGETS}
       EXPORT userver-targets
-      CONFIGURATIONS RELEASE
+      CONFIGURATIONS RELEASE RELWITHDEBINFO
       LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${ARG_COMPONENT}
       ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${ARG_COMPONENT}
       RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${ARG_COMPONENT}
@@ -58,7 +58,7 @@ function(_userver_export_targets)
   endif()
   install(EXPORT userver-targets
           FILE userver-targets.cmake
-          CONFIGURATIONS RELEASE
+          CONFIGURATIONS RELEASE RELWITHDEBINFO
           NAMESPACE userver::
           DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/userver/release
   )
