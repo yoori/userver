@@ -7,6 +7,8 @@ endif()
 include("${USERVER_CMAKE_DIR}/ModuleHelpers.cmake")
 
 find_package(Threads)
+set(SAVED_CMAKE_FIND_PACKAGE_PREFER_CONFIG ${CMAKE_FIND_PACKAGE_PREFER_CONFIG})
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 find_package(Boost REQUIRED COMPONENTS
     program_options
     filesystem
@@ -15,6 +17,7 @@ find_package(Boost REQUIRED COMPONENTS
     OPTIONAL_COMPONENTS
     stacktrace_backtrace
 )
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ${SAVED_CMAKE_FIND_PACKAGE_PREFER_CONFIG})
 find_package(Iconv REQUIRED)
 
 if(Boost_USE_STATIC_LIBS AND Boost_VERSION VERSION_LESS 1.75)
