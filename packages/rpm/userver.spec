@@ -91,6 +91,7 @@ cmake -DUSERVER_FEATURE_PATCH_LIBPQ=0 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSERVE
   -DUSERVER_INSTALL:BOOL=ON \
   -DCMAKE_CXX_COMPILER=/opt/rh/gcc-toolset-10/root/usr/bin/g++ \
   -DCMAKE_C_COMPILER=/opt/rh/gcc-toolset-10/root/usr/bin/gcc \
+  -DUSERVER_FEATURE_GRPC:BOOL=ON \
   ..
 
 cmake --build . -j 8
