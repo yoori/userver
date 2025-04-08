@@ -1,6 +1,7 @@
 %define __boost_suffix 176
+%global debug_package %{nil}  # remove when so libraries will be added to package
 
-Name:    userver
+Name:    userver-devel
 Version: %{_version}
 Release: %{_release}%{?dist}
 Summary: userver framework
@@ -95,10 +96,6 @@ cmake -DUSERVER_FEATURE_PATCH_LIBPQ=0 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSERVE
 cmake --build . -j 8
 popd
 
-echo ">>>> Third party used from GIT: "
-ls -1 third_party/ | grep -v -E '^(boost_stacktrace|compiler-rt|moodycamel|pfr|rapidjson)$'
-echo "<<<<"
-
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
@@ -119,11 +116,13 @@ popd
 %clean
 rm -rf %{buildroot}
 
-%files -n %{name}
-#% {_bindir}/userver/
-%{_libdir}/lib*.so
+#%files -n %{name}
+#%{_libdir}/lib*.a
+#%{_libdir}/userver/
 
-%files -n %{name}-devel
-%{_includedir}/
-#{_libdir}/lib*.a
-%{_libdir}/cmake/userver/*.cmake
+#%files -n % {name}-devel
+%files -n %{name}
+%{_includedir}/userver/
+%{_bindir}/*
+%{_libdir}/*
+/usr/share/userver/
