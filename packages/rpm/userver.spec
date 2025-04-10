@@ -80,18 +80,19 @@ pushd build
 export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.6/site-packages
 
 # -DUSERVER_LTO:BOOL=OFF as workaround for dwz crash
-cmake -DUSERVER_FEATURE_PATCH_LIBPQ=0 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSERVER_FEATURE_STACKTRACE=0 \
+cmake -DUSERVER_FEATURE_PATCH_LIBPQ=0 -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DUSERVER_PYTHON_PATH=/usr/bin/python3 \
   -DCMAKE_INSTALL_PREFIX:PATH=/usr \
   -DCMAKE_INSTALL_LIBDIR=lib64 \
   -DUSERVER_DOWNLOAD_PACKAGES:BOOL=OFF \
   -DUSERVER_LTO:BOOL=OFF \
   -DUSERVER_GEN_GDB_DEBUGINFO:BOOL=ON \
-  -DUSERVER_FEATURE_TESTSUITE:BOOL=OFF \
   -DUSERVER_INSTALL:BOOL=ON \
   -DCMAKE_CXX_COMPILER=/opt/rh/gcc-toolset-10/root/usr/bin/g++ \
   -DCMAKE_C_COMPILER=/opt/rh/gcc-toolset-10/root/usr/bin/gcc \
+  -DUSERVER_FEATURE_STACKTRACE:BOOL=OFF \
   -DUSERVER_FEATURE_GRPC:BOOL=ON \
+  -DUSERVER_FEATURE_TESTSUITE:BOOL=OFF \
   ..
 
 cmake --build . -j 8
@@ -126,4 +127,3 @@ rm -rf %{buildroot}
 %{_includedir}/userver/
 %{_bindir}/*
 %{_libdir}/*
-/usr/share/userver/
