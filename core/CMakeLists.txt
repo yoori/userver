@@ -212,6 +212,62 @@ _userver_directory_install(COMPONENT core
     ${USERVER_THIRD_PARTY_DIRS}/pfr/include/boost
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/third_party
 )
+# COBRAZZ specific includes
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/signal_catcher.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/utils/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_counter.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_config.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_processor_pools.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/task_queue.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/engine/task/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_control.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/async_payload_base.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/ev/thread_pool_config.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/engine/ev/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/work_stealing_queue/task_queue.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/work_stealing_queue/consumer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/work_stealing_queue/global_queue.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/work_stealing_queue/local_queue.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/work_stealing_queue/consumers_manager.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/task/work_stealing_queue/consumers_state.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/engine/task/work_stealing_queue/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/server/server_config.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/server/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/server/net/listener_config.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/server/net/connection_config.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/server/net/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_config.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/pool_stats.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/coro/stack_usage_monitor.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/engine/coro/
+)
+if (USERVER_FEATURE_UBOOST_CORO)
+    _userver_directory_install(COMPONENT core FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/uboost_coro/include/coroutines/coroutine.hpp
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/coroutines/
+    )
+else()
+    _userver_directory_install(COMPONENT core FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/sys_coro/include/coroutines/coroutine.hpp
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/coroutines/
+    )
+endif()
 
 target_include_directories(${PROJECT_NAME} SYSTEM BEFORE PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libc_include_fixes>

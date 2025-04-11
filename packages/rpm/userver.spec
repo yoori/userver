@@ -77,7 +77,7 @@ Open source asynchronous framework with a rich set of abstractions for fast and 
 rm -rf build
 mkdir build
 pushd build
-export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.6/site-packages
+export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.9/site-packages
 
 # -DUSERVER_LTO:BOOL=OFF as workaround for dwz crash
 cmake -DUSERVER_FEATURE_PATCH_LIBPQ=0 -DCMAKE_BUILD_TYPE=RelWithDebInfo \

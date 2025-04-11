@@ -107,3 +107,8 @@ endif()
 find_package(Boost REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC Boost::boost userver-internal-compile-options)
 _userver_install_targets(COMPONENT core TARGETS ${PROJECT_NAME})
+
+_userver_directory_install(COMPONENT core DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uboost_coro
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/
+)

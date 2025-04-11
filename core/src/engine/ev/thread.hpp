@@ -13,14 +13,12 @@
 #include <engine/ev/async_payload_base.hpp>
 #include <engine/ev/event_loop.hpp>
 #include <userver/concurrent/impl/intrusive_mpsc_queue.hpp>
+#include <userver/engine/ev/thread_fwd.hpp>
 #include <utils/statistics/thread_statistics.hpp>
 
 USERVER_NAMESPACE_BEGIN
 
 namespace engine::ev {
-
-// Avoid ev_async_send on timers that have bigger timeouts
-inline constexpr std::chrono::microseconds kMinDurationToDefer{19500};
 
 class Thread final {
 public:

@@ -5,8 +5,7 @@
 
 #include <userver/http/http_version.hpp>
 #include <userver/yaml_config/yaml_config.hpp>
-
-#include <engine/ev/thread.hpp>
+#include <userver/engine/ev/thread_fwd.hpp>
 
 USERVER_NAMESPACE_BEGIN
 

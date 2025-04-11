@@ -76,6 +76,16 @@ _userver_directory_install(COMPONENT grpc
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/..
 )
+# COBRAZZ specific includes
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ugrpc/client/impl/client_configs.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/ugrpc/client/impl/
+)
+_userver_directory_install(COMPONENT core FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ugrpc/server/impl/server_configs.hpp
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/userver/ugrpc/server/impl/
+)
+
 if (DEFINED api-common-proto_LIBRARY)
   target_link_libraries(${PROJECT_NAME}-internal PUBLIC ${api-common-proto_LIBRARY})
   _userver_install_targets(COMPONENT grpc TARGETS ${api-common-proto_LIBRARY})

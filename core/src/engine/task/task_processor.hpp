@@ -17,9 +17,12 @@
 #include <userver/concurrent/impl/interference_shield.hpp>
 #include <userver/engine/impl/detached_tasks_sync_block.hpp>
 #include <userver/logging/logger.hpp>
-#include <utils/statistics/thread_statistics.hpp>
 
 USERVER_NAMESPACE_BEGIN
+
+namespace utils::statistics {
+class ThreadPoolCpuStatsStorage;
+}  // namespace utils::statistics
 
 namespace engine {
 
